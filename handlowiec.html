@@ -88,9 +88,9 @@
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 h-[100dvh] w-full overflow-hidden select-none">
+<body class="bg-slate-50 text-slate-800 w-full select-none" style="height: 100vh; overflow-y: auto;">
 
-    <div id="root" class="h-full w-full"></div>
+    <div id="root" class="h-full w-full flex flex-col"></div>
 
     <script type="text/babel" data-type="module" data-presets="react">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -546,7 +546,7 @@
 
             // --- LAYOUT ---
             return (
-                <div className="h-full flex flex-col relative bg-slate-50">
+                <div className="h-full flex flex-col relative bg-slate-50 min-h-screen">
 
                     {/* TOP BAR */}
                     <div className="absolute top-0 left-0 right-0 z-30 pt-safe bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
@@ -592,11 +592,11 @@
                     <div className={`flex-none ${activeTab === 'sales' ? 'h-[145px]' : 'h-[75px]'}`}></div>
 
                     {/* CONTENT AREA */}
-                    <div className="flex-1 overflow-y-auto pb-safe">
+                    <div className="flex-1 overflow-y-auto w-full h-full pb-[100px] -webkit-overflow-scrolling-touch">
 
                         {/* 1. TRASA */}
                         {activeTab === 'sales' && (
-                            <div className="px-4 pt-4 pb-24 min-h-full">
+                            <div className="px-4 pt-4 pb-24 min-h-max">
                                 {visiblePoints.length === 0 && (
                                     <div className="flex flex-col items-center justify-center mt-20 text-slate-400/60">
                                         <Icon path={icons.calendar} size={48} className="mb-2" />
@@ -648,7 +648,7 @@
 
                         {/* 2. MAGAZYN */}
                         {activeTab === 'warehouse' && (
-                            <div className="min-h-full">
+                            <div className="min-h-max">
                                 <div className="sticky top-0 z-20 bg-slate-50/95 backdrop-blur px-4 py-2 border-b border-slate-200 shadow-sm flex gap-3">
                                     <div className="relative flex-1">
                                         <select value={selectedCourier} onChange={e => setSelectedCourier(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 h-11 pl-3 pr-8 shadow-sm outline-none appearance-none">
@@ -659,7 +659,7 @@
                                     </div>
                                     <input type="date" value={whDate} onChange={e => setWhDate(e.target.value)} className="bg-white border border-slate-200 rounded-xl px-3 h-11 text-sm font-bold text-slate-700 outline-none shadow-sm" />
                                 </div>
-                                <div className="p-4 pb-24">
+                                <div className="p-4 pb-24 h-full">
                                     {visibleDeliveries.length === 0 && <div className="text-center mt-20 text-slate-400 font-medium">Brak dostaw.</div>}
                                     {visibleDeliveries.map(item => (
                                         <div key={item.id} className="bg-white mb-3 p-4 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden">
@@ -675,14 +675,14 @@
 
                         {/* 3. TELEFONY (NOWE) */}
                         {activeTab === 'phones' && (
-                            <div className="min-h-full">
+                            <div className="min-h-max">
                                 <div className="sticky top-0 z-20 bg-slate-50/95 backdrop-blur px-4 py-2 border-b border-slate-200 shadow-sm">
                                     <div className="relative">
                                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon path={icons.search} size={18} /></div>
                                         <input type="text" placeholder="Szukaj kontaktu..." value={phoneSearch} onChange={e => setPhoneSearch(e.target.value)} className="w-full pl-10 pr-4 h-11 bg-white border border-slate-200 rounded-xl text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-green-100 focus:border-green-400" />
                                     </div>
                                 </div>
-                                <div className="p-4 pb-24">
+                                <div className="p-4 pb-24 h-full">
                                     {visiblePhones.length === 0 && <div className="text-center mt-20 text-slate-400 font-medium">Brak kontaktów.</div>}
                                     {visiblePhones.map(p => (
                                         <div key={p.id} className="bg-white mb-3 p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between group active:scale-[0.98] transition-transform">
@@ -701,449 +701,450 @@
                                 </div>
                             </div>
                         )}
-                    </div>
-                    {/* 4. ZAKUPY ALLEGRO */}
-                    {activeTab === 'orders' && (
-                        <div className="min-h-full">
-                            <div className="sticky top-0 z-20 bg-slate-50/95 backdrop-blur px-4 py-2 border-b border-slate-200 shadow-sm space-y-2">
-                                <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon path={icons.search} size={18} /></div>
-                                    <input type="text" placeholder="Szukaj (przedmiot, sprzedawca)..." value={purchaseSearch} onChange={e => setPurchaseSearch(e.target.value)} className="w-full pl-10 pr-4 h-11 bg-white border border-slate-200 rounded-xl text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400" />
+                        {/* 4. ZAKUPY ALLEGRO */}
+                        {activeTab === 'orders' && (
+                            <div className="min-h-max">
+                                <div className="sticky top-0 z-20 bg-slate-50/95 backdrop-blur px-4 py-2 border-b border-slate-200 shadow-sm space-y-2">
+                                    <div className="relative">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon path={icons.search} size={18} /></div>
+                                        <input type="text" placeholder="Szukaj (przedmiot, sprzedawca)..." value={purchaseSearch} onChange={e => setPurchaseSearch(e.target.value)} className="w-full pl-10 pr-4 h-11 bg-white border border-slate-200 rounded-xl text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400" />
+                                    </div>
+                                    <div className="relative">
+                                        <select value={buyerFilter} onChange={e => setBuyerFilter(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 h-11 pl-3 pr-8 shadow-sm outline-none appearance-none">
+                                            <option value="">Wszyscy kupujący</option>
+                                            {[...new Set(purchases.map(p => p.buyer).filter(Boolean))].sort().map(b => (
+                                                <option key={b} value={b}>{b}</option>
+                                            ))}
+                                        </select>
+                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><Icon path={icons.chevronDown} size={16} /></div>
+                                    </div>
                                 </div>
-                                <div className="relative">
-                                    <select value={buyerFilter} onChange={e => setBuyerFilter(e.target.value)} className="w-full bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 h-11 pl-3 pr-8 shadow-sm outline-none appearance-none">
-                                        <option value="">Wszyscy kupujący</option>
-                                        {[...new Set(purchases.map(p => p.buyer).filter(Boolean))].sort().map(b => (
-                                            <option key={b} value={b}>{b}</option>
-                                        ))}
-                                    </select>
-                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><Icon path={icons.chevronDown} size={16} /></div>
+                                <div className="p-4 pb-24 h-full">
+                                    {(() => {
+                                        const filteredPurchases = purchases.filter(p => {
+                                            const matchesBuyer = !buyerFilter || p.buyer === buyerFilter;
+                                            const searchStr = purchaseSearch.toLowerCase();
+                                            const matchesSearch = !purchaseSearch ||
+                                                (p.itemName && p.itemName.toLowerCase().includes(searchStr)) ||
+                                                (p.seller && p.seller.toLowerCase().includes(searchStr)) ||
+                                                (p.notes && p.notes.toLowerCase().includes(searchStr));
+                                            return matchesBuyer && matchesSearch;
+                                        });
+
+                                        if (filteredPurchases.length === 0) {
+                                            return <div className="text-center mt-20 text-slate-400 font-medium">Brak zakupów.</div>;
+                                        }
+
+                                        return filteredPurchases.map(p => {
+                                            const isExpanded = expandedPurchaseId === p.id;
+                                            return (
+                                                <div key={p.id} onClick={() => setExpandedPurchaseId(prev => prev === p.id ? null : p.id)} className={`bg-white mb-3 rounded-2xl shadow-sm border overflow-hidden transition-all duration-200 ${isExpanded ? 'border-blue-300 shadow-md ring-1 ring-blue-100' : 'border-slate-200 active:scale-[0.99]'}`}>
+                                                    {/* Nagłówek mini */}
+                                                    <div className="px-4 py-3 flex justify-between items-start gap-4">
+                                                        <div className="min-w-0 flex-1">
+                                                            <div className="flex items-center gap-2 mb-1">
+                                                                <span className="text-[10px] font-bold text-slate-400">{p.date}</span>
+                                                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${p.invoiceStatus_v2 === 'wprowadzona' ? 'bg-green-100 text-green-700' :
+                                                                    p.invoiceStatus_v2 === 'brak' ? 'bg-red-100 text-red-700' :
+                                                                        p.invoiceStatus_v2 === 'pobrania' ? 'bg-blue-100 text-blue-700' :
+                                                                            p.invoiceStatus_v2 === 'bledna' ? 'bg-orange-100 text-orange-700' :
+                                                                                'bg-slate-100 text-slate-600'
+                                                                    }`}>
+                                                                    Faktura: {p.invoiceStatus_v2 || 'brak'}
+                                                                </span>
+                                                            </div>
+                                                            <h3 className={`font-bold text-sm ${isExpanded ? 'text-blue-700 whitespace-normal' : 'text-slate-800 truncate'}`}>
+                                                                {p.itemName || 'Brak nazwy'}
+                                                            </h3>
+                                                            <div className="text-xs text-slate-500 truncate mt-0.5">Od: {p.seller}</div>
+                                                        </div>
+                                                        <div className="flex flex-col items-end flex-none">
+                                                            <div className="font-bold text-slate-800">{Number(p.price || 0).toFixed(2)} zł</div>
+                                                            <div className="text-xs text-slate-400 mt-1">{p.quantity} szt.</div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Rozwinięcie szczegółów */}
+                                                    {isExpanded && (
+                                                        <div className="px-4 pb-4 pt-2 border-t border-slate-100 bg-slate-50/50 space-y-3 relative">
+                                                            <div className="grid grid-cols-2 gap-3">
+                                                                <div>
+                                                                    <div className="text-[10px] font-bold text-slate-400 uppercase">Kupujący</div>
+                                                                    <div className="text-sm text-slate-700 font-medium">{p.buyer || '-'}</div>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-[10px] font-bold text-slate-400 uppercase">Stan w mag.</div>
+                                                                    <div className="text-sm text-slate-700 font-mono">{p.warehouseStatus || 'Brak podanego stanu'}</div>
+                                                                </div>
+                                                            </div>
+
+                                                            {p.subItems && p.subItems.length > 0 && (
+                                                                <div className="bg-white p-3 rounded-xl border border-slate-200">
+                                                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Pod-produkty</div>
+                                                                    <div className="space-y-1.5">
+                                                                        {p.subItems.map(sub => (
+                                                                            <div key={sub.id} className="flex justify-between items-center text-xs">
+                                                                                <span className="text-slate-600 truncate mr-2 flex-1">{sub.name}</span>
+                                                                                <span className="font-medium text-slate-800 whitespace-nowrap">{sub.quantity}x {Number(sub.price || 0).toFixed(2)}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+
+                                                            {(p.notes || p.trackingNumber) && (
+                                                                <div className="bg-white p-3 rounded-xl border border-slate-200 space-y-2">
+                                                                    {p.trackingNumber && (
+                                                                        <div>
+                                                                            <div className="text-[10px] font-bold text-slate-400 uppercase">Tracking</div>
+                                                                            <div className="text-xs text-slate-700 mt-0.5 break-all">{p.trackingNumber}</div>
+                                                                        </div>
+                                                                    )}
+                                                                    {p.notes && (
+                                                                        <div>
+                                                                            <div className="text-[10px] font-bold text-slate-400 uppercase">Uwagi</div>
+                                                                            <div className="text-xs text-slate-700 mt-0.5 whitespace-pre-line">{p.notes}</div>
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            )}
+
+                                                            <div className="flex gap-2 pt-1">
+                                                                {p.productUrl && (
+                                                                    <a href={p.productUrl} target="_blank" onClick={e => e.stopPropagation()} className="flex-1 bg-blue-50 text-blue-600 border border-blue-200 py-2.5 rounded-xl text-center text-sm font-bold flex justify-center items-center gap-1.5 active:scale-95 transition-transform">
+                                                                        Otwórz URL
+                                                                    </a>
+                                                                )}
+                                                                {p.invoiceLink && (
+                                                                    <a href={p.invoiceLink} target="_blank" onClick={e => e.stopPropagation()} className="flex-1 bg-green-50 text-green-700 border border-green-200 py-2.5 rounded-xl text-center text-sm font-bold flex justify-center items-center gap-1.5 active:scale-95 transition-transform">
+                                                                        <Icon path={icons.paperclip} size={14} /> FV
+                                                                    </a>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        });
+                                    })()}
                                 </div>
                             </div>
-                            <div className="p-4 pb-24">
-                                {(() => {
-                                    const filteredPurchases = purchases.filter(p => {
-                                        const matchesBuyer = !buyerFilter || p.buyer === buyerFilter;
-                                        const searchStr = purchaseSearch.toLowerCase();
-                                        const matchesSearch = !purchaseSearch ||
-                                            (p.itemName && p.itemName.toLowerCase().includes(searchStr)) ||
-                                            (p.seller && p.seller.toLowerCase().includes(searchStr)) ||
-                                            (p.notes && p.notes.toLowerCase().includes(searchStr));
-                                        return matchesBuyer && matchesSearch;
-                                    });
+                        )}
 
-                                    if (filteredPurchases.length === 0) {
-                                        return <div className="text-center mt-20 text-slate-400 font-medium">Brak zakupów.</div>;
-                                    }
-
-                                    return filteredPurchases.map(p => {
-                                        const isExpanded = expandedPurchaseId === p.id;
+                        {/* 5. RABATY */}
+                        {activeTab === 'discounts' && (
+                            <div className="min-h-max">
+                                <div className="sticky top-0 z-20 bg-slate-50/95 backdrop-blur px-4 py-2 border-b border-slate-200 shadow-sm">
+                                    <div className="relative">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon path={icons.search} size={18} /></div>
+                                        <input type="text" placeholder="Szukaj dostawcy..." value={discountSearch} onChange={e => setDiscountSearch(e.target.value)} className="w-full pl-10 pr-4 h-11 bg-white border border-slate-200 rounded-xl text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-pink-100 focus:border-pink-400" />
+                                    </div>
+                                </div>
+                                <div className="p-4 pb-24 h-full">
+                                    {filteredDiscounts.length === 0 && <div className="text-center mt-20 text-slate-400 font-medium">Brak danych rabatowych.</div>}
+                                    {filteredDiscounts.map(item => {
+                                        const isExpanded = expandedDiscountId === item.id;
                                         return (
-                                            <div key={p.id} onClick={() => setExpandedPurchaseId(prev => prev === p.id ? null : p.id)} className={`bg-white mb-3 rounded-2xl shadow-sm border overflow-hidden transition-all duration-200 ${isExpanded ? 'border-blue-300 shadow-md ring-1 ring-blue-100' : 'border-slate-200 active:scale-[0.99]'}`}>
-                                                {/* Nagłówek mini */}
-                                                <div className="px-4 py-3 flex justify-between items-start gap-4">
-                                                    <div className="min-w-0 flex-1">
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <span className="text-[10px] font-bold text-slate-400">{p.date}</span>
-                                                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${p.invoiceStatus_v2 === 'wprowadzona' ? 'bg-green-100 text-green-700' :
-                                                                p.invoiceStatus_v2 === 'brak' ? 'bg-red-100 text-red-700' :
-                                                                    p.invoiceStatus_v2 === 'pobrania' ? 'bg-blue-100 text-blue-700' :
-                                                                        p.invoiceStatus_v2 === 'bledna' ? 'bg-orange-100 text-orange-700' :
-                                                                            'bg-slate-100 text-slate-600'
-                                                                }`}>
-                                                                Faktura: {p.invoiceStatus_v2 || 'brak'}
-                                                            </span>
-                                                        </div>
-                                                        <h3 className={`font-bold text-sm ${isExpanded ? 'text-blue-700 whitespace-normal' : 'text-slate-800 truncate'}`}>
-                                                            {p.itemName || 'Brak nazwy'}
-                                                        </h3>
-                                                        <div className="text-xs text-slate-500 truncate mt-0.5">Od: {p.seller}</div>
+                                            <div key={item.id} onClick={() => setExpandedDiscountId(prev => prev === item.id ? null : item.id)} className={`bg-white mb-3 rounded-2xl shadow-sm border overflow-hidden transition-all active:scale-[0.99] ${isExpanded ? 'border-pink-200 shadow-md' : 'border-slate-100'}`}>
+                                                {/* Header */}
+                                                <div className="p-4 flex items-center justify-between">
+                                                    <div className="flex-1 min-w-0">
+                                                        <h3 className="font-bold text-base text-slate-800 truncate">{item.supplier}</h3>
+                                                        {!isExpanded && item.discount && <div className="text-xs text-slate-500 truncate mt-0.5">{item.discount}</div>}
                                                     </div>
-                                                    <div className="flex flex-col items-end flex-none">
-                                                        <div className="font-bold text-slate-800">{Number(p.price || 0).toFixed(2)} zł</div>
-                                                        <div className="text-xs text-slate-400 mt-1">{p.quantity} szt.</div>
+                                                    <div className="flex items-center gap-2 ml-2">
+                                                        <Icon path={isExpanded ? icons.chevronDown : icons.chevronRight} size={18} className={isExpanded ? 'text-pink-500' : 'text-slate-300'} />
                                                     </div>
                                                 </div>
 
-                                                {/* Rozwinięcie szczegółów */}
+                                                {/* Expanded content */}
                                                 {isExpanded && (
-                                                    <div className="px-4 pb-4 pt-2 border-t border-slate-100 bg-slate-50/50 space-y-3 relative">
-                                                        <div className="grid grid-cols-2 gap-3">
-                                                            <div>
-                                                                <div className="text-[10px] font-bold text-slate-400 uppercase">Kupujący</div>
-                                                                <div className="text-sm text-slate-700 font-medium">{p.buyer || '-'}</div>
-                                                            </div>
-                                                            <div>
-                                                                <div className="text-[10px] font-bold text-slate-400 uppercase">NIP CzeCH</div>
-                                                                <div className="text-sm text-slate-700 font-mono">{p.nip || '-'}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        {p.subItems && p.subItems.length > 0 && (
-                                                            <div className="bg-white p-3 rounded-xl border border-slate-200">
-                                                                <div className="text-[10px] font-bold text-slate-400 uppercase mb-2">Pod-produkty</div>
-                                                                <div className="space-y-1.5">
-                                                                    {p.subItems.map(sub => (
-                                                                        <div key={sub.id} className="flex justify-between items-center text-xs">
-                                                                            <span className="text-slate-600 truncate mr-2 flex-1">{sub.name}</span>
-                                                                            <span className="font-medium text-slate-800 whitespace-nowrap">{sub.quantity}x {Number(sub.price || 0).toFixed(2)}</span>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
+                                                    <div className="px-4 pb-4 border-t border-slate-100 pt-3 animate-fade-in">
+                                                        {/* Rabat */}
+                                                        {item.discount && (
+                                                            <div className="mb-3">
+                                                                <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Rabat</div>
+                                                                <div className="text-sm text-slate-700 whitespace-pre-wrap bg-slate-50 p-2.5 rounded-xl border border-slate-100">{item.discount}</div>
                                                             </div>
                                                         )}
-
-                                                        {(p.notes || p.trackingNumber) && (
-                                                            <div className="bg-white p-3 rounded-xl border border-slate-200 space-y-2">
-                                                                {p.trackingNumber && (
-                                                                    <div>
-                                                                        <div className="text-[10px] font-bold text-slate-400 uppercase">Tracking</div>
-                                                                        <div className="text-xs text-slate-700 mt-0.5 break-all">{p.trackingNumber}</div>
+                                                        {/* Szczegóły */}
+                                                        {item.details && (
+                                                            <div className="mb-3">
+                                                                <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Szczegóły</div>
+                                                                <div className="text-sm text-slate-600 whitespace-pre-wrap">{item.details}</div>
+                                                            </div>
+                                                        )}
+                                                        {/* WWW */}
+                                                        {item.www && (
+                                                            <div className="mb-3">
+                                                                <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">WWW</div>
+                                                                <a href={item.www.startsWith('http') ? item.www : `https://${item.www}`} target="_blank" className="text-sm text-blue-600 underline break-all">{item.www}</a>
+                                                            </div>
+                                                        )}
+                                                        {/* Login / Hasło */}
+                                                        {(item.login || item.password) && (
+                                                            <div className="mb-3 bg-amber-50 p-3 rounded-xl border border-amber-100">
+                                                                <div className="text-[10px] font-bold text-amber-600 uppercase mb-2">Dane logowania</div>
+                                                                {item.login && (
+                                                                    <div className="flex items-center justify-between mb-1">
+                                                                        <span className="text-sm font-mono text-slate-700"><b className="text-slate-900">L:</b> {item.login}</span>
+                                                                        <button onClick={(e) => { e.stopPropagation(); copyToClipboard(item.login); }} className="text-blue-500 p-1"><Icon path={icons.clipboard} size={14} /></button>
                                                                     </div>
                                                                 )}
-                                                                {p.notes && (
-                                                                    <div>
-                                                                        <div className="text-[10px] font-bold text-slate-400 uppercase">Uwagi</div>
-                                                                        <div className="text-xs text-slate-700 mt-0.5">{p.notes}</div>
+                                                                {item.password && (
+                                                                    <div className="flex items-center justify-between">
+                                                                        <span className="text-sm font-mono text-slate-700"><b className="text-slate-900">H:</b> {item.password}</span>
+                                                                        <button onClick={(e) => { e.stopPropagation(); copyToClipboard(item.password); }} className="text-blue-500 p-1"><Icon path={icons.clipboard} size={14} /></button>
                                                                     </div>
                                                                 )}
                                                             </div>
                                                         )}
-
-                                                        <div className="flex gap-2 pt-1">
-                                                            {p.productUrl && (
-                                                                <a href={p.productUrl} target="_blank" onClick={e => e.stopPropagation()} className="flex-1 bg-blue-50 text-blue-600 border border-blue-200 py-2.5 rounded-xl text-center text-sm font-bold flex justify-center items-center gap-1.5 active:scale-95 transition-transform">
-                                                                    Otwórz URL
-                                                                </a>
-                                                            )}
-                                                            {p.invoiceLink && (
-                                                                <a href={p.invoiceLink} target="_blank" onClick={e => e.stopPropagation()} className="flex-1 bg-green-50 text-green-700 border border-green-200 py-2.5 rounded-xl text-center text-sm font-bold flex justify-center items-center gap-1.5 active:scale-95 transition-transform">
-                                                                    <Icon path={icons.paperclip} size={14} /> FV
-                                                                </a>
-                                                            )}
+                                                        {/* Uwagi */}
+                                                        {item.notes && (
+                                                            <div className="mb-3">
+                                                                <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Uwagi</div>
+                                                                <div className="text-sm text-slate-600 whitespace-pre-wrap">{item.notes}</div>
+                                                            </div>
+                                                        )}
+                                                        {/* Ostatnia edycja */}
+                                                        {item.lastEdited && (
+                                                            <div className="text-[10px] text-slate-400 mb-3">Zmieniono: {new Date(item.lastEdited).toLocaleDateString('pl-PL')}</div>
+                                                        )}
+                                                        {/* Akcje */}
+                                                        <div className="flex gap-2 pt-2 border-t border-slate-100">
+                                                            <button onClick={(e) => { e.stopPropagation(); openDiscountEdit(item); }} className="flex-1 bg-pink-50 text-pink-600 font-bold py-2.5 rounded-xl text-sm border border-pink-200 active:scale-95 transition flex items-center justify-center gap-1.5">
+                                                                <Icon path={icons.edit3} size={14} /> Edytuj
+                                                            </button>
+                                                            <button onClick={(e) => { e.stopPropagation(); handleDeleteDiscount(item.id); }} className="bg-white text-red-400 font-bold py-2.5 px-4 rounded-xl text-sm border border-red-200 active:scale-95 transition">
+                                                                <Icon path={icons.trash2} size={14} />
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 )}
                                             </div>
                                         );
-                                    });
-                                })()}
+                                    })}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                        {/* FAB: DODAWANIE */}
 
-                    {/* 5. RABATY */}
-                    {activeTab === 'discounts' && (
-                        <div className="min-h-full">
-                            <div className="sticky top-0 z-20 bg-slate-50/95 backdrop-blur px-4 py-2 border-b border-slate-200 shadow-sm">
+                        {activeTab === 'sales' && (
+                            <div className="absolute bottom-[80px] right-5 z-20">
+                                <button onClick={() => setIsAddModalOpen(true)} className="w-14 h-14 bg-slate-900 text-white rounded-full shadow-lg shadow-slate-900/30 flex items-center justify-center transition-transform active:scale-90"><Icon path={icons.plus} size={28} strokeWidth={2.5} /></button>
+                            </div>
+                        )}
+                        {activeTab === 'phones' && (
+                            <div className="absolute bottom-[80px] right-5 z-20">
+                                <button onClick={() => { setPhoneData({ id: null, carrier: '', name: '', number: '', notes: '' }); setIsPhoneModalOpen(true); }} className="w-14 h-14 bg-green-600 text-white rounded-full shadow-lg shadow-green-600/30 flex items-center justify-center transition-transform active:scale-90"><Icon path={icons.plus} size={28} strokeWidth={2.5} /></button>
+                            </div>
+                        )}
+                        {activeTab === 'discounts' && (
+                            <div className="absolute bottom-[80px] right-5 z-20">
+                                <button onClick={openDiscountAdd} className="w-14 h-14 bg-pink-600 text-white rounded-full shadow-lg shadow-pink-600/30 flex items-center justify-center transition-transform active:scale-90"><Icon path={icons.plus} size={28} strokeWidth={2.5} /></button>
+                            </div>
+                        )}
+
+                        {/* BOTTOM NAV */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 pb-safe z-30 h-[65px] flex items-center shadow-[0_-5px_20px_rgba(0,0,0,0.03)]">
+                            <button onClick={() => setActiveTab('sales')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'sales' ? 'text-slate-900' : 'text-slate-400'}`}>
+                                <Icon path={icons.map} size={24} strokeWidth={activeTab === 'sales' ? 2.5 : 2} />
+                                <span className="text-[10px] font-bold mt-1">Trasa</span>
+                            </button>
+                            <button onClick={() => setActiveTab('warehouse')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'warehouse' ? 'text-orange-600' : 'text-slate-400'}`}>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon path={icons.search} size={18} /></div>
-                                    <input type="text" placeholder="Szukaj dostawcy..." value={discountSearch} onChange={e => setDiscountSearch(e.target.value)} className="w-full pl-10 pr-4 h-11 bg-white border border-slate-200 rounded-xl text-sm font-bold shadow-sm outline-none focus:ring-2 focus:ring-pink-100 focus:border-pink-400" />
+                                    <Icon path={icons.truck} size={24} strokeWidth={activeTab === 'warehouse' ? 2.5 : 2} />
+                                    {deliveries.filter(d => d.date === new Date().toISOString().split('T')[0]).length > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold shadow-sm">{deliveries.filter(d => d.date === new Date().toISOString().split('T')[0]).length}</span>}
+                                </div>
+                                <span className="text-[10px] font-bold mt-1">Magazyn</span>
+                            </button>
+                            <button onClick={() => setActiveTab('phones')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'phones' ? 'text-green-600' : 'text-slate-400'}`}>
+                                <Icon path={icons.phone || '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>'} size={24} strokeWidth={activeTab === 'phones' ? 2.5 : 2} />
+                                <span className="text-[10px] font-bold mt-1">Telefony</span>
+                            </button>
+                            <button onClick={() => setActiveTab('orders')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'orders' ? 'text-blue-600' : 'text-slate-400'}`}>
+                                <div className="relative">
+                                    <Icon path={icons.shoppingCart} size={22} strokeWidth={activeTab === 'orders' ? 2.5 : 2} />
+                                    {purchases.filter(p => !['wprowadzona', 'anulowane', 'zwrocone'].includes(p.invoiceStatus_v2)).length > 0 &&
+                                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold shadow-sm">
+                                            {purchases.filter(p => !['wprowadzona', 'anulowane', 'zwrocone'].includes(p.invoiceStatus_v2)).length}
+                                        </span>
+                                    }
+                                </div>
+                                <span className="text-[9px] font-bold mt-1">Allegro</span>
+                            </button>
+                            <button onClick={() => setActiveTab('discounts')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'discounts' ? 'text-pink-600' : 'text-slate-400'}`}>
+                                <Icon path={icons.list} size={22} strokeWidth={activeTab === 'discounts' ? 2.5 : 2} />
+                                <span className="text-[9px] font-bold mt-1">Rabaty</span>
+                            </button>
+                        </div>
+
+                        {/* TOAST */}
+                        {toast && (
+                            <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-slate-900/95 backdrop-blur text-white px-4 py-2.5 rounded-full shadow-xl flex items-center gap-3 z-[100] animate-fade-in w-max max-w-[90%]">
+                                <Icon path={icons.checkCircle} className="text-green-400" size={18} />
+                                <span className="font-bold text-sm">{toast}</span>
+                            </div>
+                        )}
+
+                        {/* MODAL: DODAJ ZLECENIE */}
+                        {isAddModalOpen && (
+                            <div className="fixed inset-0 z-50 flex items-end justify-center">
+                                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsAddModalOpen(false)}></div>
+                                <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up max-h-[90vh] overflow-y-auto">
+                                    <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                                    <h3 className="text-2xl font-bold text-slate-800 mb-6">Nowe Zlecenie</h3>
+                                    <div className="space-y-4">
+                                        <input className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-lg outline-none focus:border-blue-500 transition" placeholder="Nazwa klienta" value={newData.client} onChange={e => setNewData({ ...newData, client: e.target.value })} autoFocus />
+                                        <div className="w-full bg-slate-100 text-slate-400 border border-slate-200 p-3 rounded-2xl text-sm font-bold text-center uppercase tracking-widest">
+                                            Dowolny kierowca (testy)
+                                        </div>
+                                        <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 outline-none focus:border-blue-500 transition" placeholder="Uwagi..." value={newData.note} onChange={e => setNewData({ ...newData, note: e.target.value })}></textarea>
+                                        <div onClick={() => setNewData({ ...newData, isUrgent: !newData.isUrgent })} className={`p-4 rounded-2xl border cursor-pointer flex items-center gap-3 font-bold transition ${newData.isUrgent ? 'bg-red-50 border-red-300 text-red-600' : 'bg-white border-slate-200 text-slate-400'}`}>
+                                            <Icon path={icons.fire} size={20} className={newData.isUrgent ? 'text-red-500' : 'text-slate-300'} /> PILNE
+                                        </div>
+                                        <button onClick={handleAdd} className="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl text-lg shadow-lg active:scale-95 transition-transform mt-2">DODAJ</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="p-4 pb-24">
-                                {filteredDiscounts.length === 0 && <div className="text-center mt-20 text-slate-400 font-medium">Brak danych rabatowych.</div>}
-                                {filteredDiscounts.map(item => {
-                                    const isExpanded = expandedDiscountId === item.id;
-                                    return (
-                                        <div key={item.id} onClick={() => setExpandedDiscountId(prev => prev === item.id ? null : item.id)} className={`bg-white mb-3 rounded-2xl shadow-sm border overflow-hidden transition-all active:scale-[0.99] ${isExpanded ? 'border-pink-200 shadow-md' : 'border-slate-100'}`}>
-                                            {/* Header */}
-                                            <div className="p-4 flex items-center justify-between">
-                                                <div className="flex-1 min-w-0">
-                                                    <h3 className="font-bold text-base text-slate-800 truncate">{item.supplier}</h3>
-                                                    {!isExpanded && item.discount && <div className="text-xs text-slate-500 truncate mt-0.5">{item.discount}</div>}
-                                                </div>
-                                                <div className="flex items-center gap-2 ml-2">
-                                                    <Icon path={isExpanded ? icons.chevronDown : icons.chevronRight} size={18} className={isExpanded ? 'text-pink-500' : 'text-slate-300'} />
-                                                </div>
+                        )}
+
+                        {/* MODAL: EDYCJA ZLECENIA */}
+                        {isEditModalOpen && (
+                            <div className="fixed inset-0 z-50 flex items-end justify-center">
+                                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsEditModalOpen(false)}></div>
+                                <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up">
+                                    <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                                    <div className="flex justify-between items-start mb-6">
+                                        <h3 className="text-xl font-bold text-slate-800">Edycja</h3>
+                                        <button onClick={() => setIsEditModalOpen(false)} className="bg-slate-100 p-2 rounded-full text-slate-500 hover:bg-slate-200"><Icon path={icons.x} size={20} /></button>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <input className="w-full bg-slate-50 border border-slate-200 p-4 rounded-2xl text-lg font-bold outline-none focus:border-blue-500 transition" value={editData.client} onChange={e => setEditData({ ...editData, client: e.target.value })} />
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <select className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold h-12 outline-none" value={editData.dayOfWeek} onChange={e => setEditData({ ...editData, dayOfWeek: e.target.value })}>{sortedTabs.map(d => <option key={d.key} value={d.key}>{d.label}</option>)}</select>
+                                            <select className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold h-12 outline-none" value={editData.assignedDriver || 'WOLNE'} onChange={e => setEditData({ ...editData, assignedDriver: e.target.value === 'WOLNE' ? '' : e.target.value })}><option value="WOLNE">WOLNE</option><option value="Dawid">Dawid</option><option value="Patryk">Patryk</option></select>
+                                        </div>
+                                        <textarea rows="3" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 transition" value={editData.note} onChange={e => setEditData({ ...editData, note: e.target.value })}></textarea>
+                                        <div className="flex gap-3">
+                                            <div onClick={() => setEditData({ ...editData, isUrgent: !editData.isUrgent })} className={`flex-1 p-3 rounded-xl border flex flex-col items-center justify-center gap-1 cursor-pointer transition ${editData.isUrgent ? 'bg-red-50 border-red-500 text-red-600' : 'bg-white border-slate-200 text-slate-400'}`}><Icon path={icons.fire} size={20} /><span className="text-[10px] font-bold uppercase">Pilne</span></div>
+                                            <div onClick={() => setEditData({ ...editData, isPaused: !editData.isPaused })} className={`flex-1 p-3 rounded-xl border flex flex-col items-center justify-center gap-1 cursor-pointer transition ${editData.isPaused ? 'bg-slate-700 border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-400'}`}><Icon path={icons.lock} size={20} /><span className="text-[10px] font-bold uppercase">Pauza</span></div>
+                                        </div>
+                                        <div className="flex gap-3 pt-2">
+                                            <button onClick={handleDelete} className="flex-1 bg-white border border-red-200 text-red-500 font-bold py-4 rounded-2xl hover:bg-red-50 transition">USUŃ</button>
+                                            <button onClick={handleSaveEdit} className="flex-[2] bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 transition-transform">ZAPISZ</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {/* MODAL: NOWE ZAMÓWIENIE ALLEGRO */}
+                        {isOrderModalOpen && (
+                            <div className="fixed inset-0 z-50 flex items-end justify-center">
+                                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsOrderModalOpen(false)}></div>
+                                <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up h-[90vh] flex flex-col">
+                                    <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4 flex-none"></div>
+                                    <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 flex-none">
+                                        <Icon path={icons.shoppingCart} className="text-blue-600" /> Przegląd Zakupów
+                                    </h3>
+
+                                    <div className="space-y-4 overflow-y-auto flex-1 pb-4">
+                                        {/* This section would contain the UI for browsing purchases */}
+                                        <div className="text-center text-slate-400 font-medium mt-10">Brak dostępnych zakupów do przeglądania.</div>
+                                    </div>
+
+                                    <div className="flex-none pt-4 border-t border-slate-100">
+                                        <button onClick={() => setIsOrderModalOpen(false)} className="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 active:scale-95 transition-transform flex justify-center items-center gap-2">
+                                            ZAMKNIJ
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {/* MODAL: RABATY (ADD/EDIT) */}
+                        {isDiscountModalOpen && (
+                            <div className="fixed inset-0 z-50 flex items-end justify-center">
+                                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsDiscountModalOpen(false)}></div>
+                                <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up max-h-[90vh] overflow-y-auto">
+                                    <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
+                                    <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"><Icon path={icons.list} className="text-pink-600" /> {discountForm.id ? 'Edycja rabatu' : 'Nowy wpis'}</h3>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Dostawca *</label>
+                                            <input className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-lg outline-none focus:border-pink-500 transition" placeholder="Nazwa dostawcy" value={discountForm.supplier} onChange={e => setDiscountForm({ ...discountForm, supplier: e.target.value })} autoFocus />
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Rabat</label>
+                                            <textarea rows="3" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="np. -35% od cennika..." value={discountForm.discount} onChange={e => setDiscountForm({ ...discountForm, discount: e.target.value })}></textarea>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Szczegóły</label>
+                                            <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="Przez kogo, warunki..." value={discountForm.details} onChange={e => setDiscountForm({ ...discountForm, details: e.target.value })}></textarea>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">WWW</label>
+                                            <input className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="https://..." value={discountForm.www} onChange={e => setDiscountForm({ ...discountForm, www: e.target.value })} />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div>
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Login</label>
+                                                <input className="w-full bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm font-mono outline-none focus:border-amber-500 transition" placeholder="Login" value={discountForm.login} onChange={e => setDiscountForm({ ...discountForm, login: e.target.value })} />
                                             </div>
-
-                                            {/* Expanded content */}
-                                            {isExpanded && (
-                                                <div className="px-4 pb-4 border-t border-slate-100 pt-3 animate-fade-in">
-                                                    {/* Rabat */}
-                                                    {item.discount && (
-                                                        <div className="mb-3">
-                                                            <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Rabat</div>
-                                                            <div className="text-sm text-slate-700 whitespace-pre-wrap bg-slate-50 p-2.5 rounded-xl border border-slate-100">{item.discount}</div>
-                                                        </div>
-                                                    )}
-                                                    {/* Szczegóły */}
-                                                    {item.details && (
-                                                        <div className="mb-3">
-                                                            <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Szczegóły</div>
-                                                            <div className="text-sm text-slate-600 whitespace-pre-wrap">{item.details}</div>
-                                                        </div>
-                                                    )}
-                                                    {/* WWW */}
-                                                    {item.www && (
-                                                        <div className="mb-3">
-                                                            <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">WWW</div>
-                                                            <a href={item.www.startsWith('http') ? item.www : `https://${item.www}`} target="_blank" className="text-sm text-blue-600 underline break-all">{item.www}</a>
-                                                        </div>
-                                                    )}
-                                                    {/* Login / Hasło */}
-                                                    {(item.login || item.password) && (
-                                                        <div className="mb-3 bg-amber-50 p-3 rounded-xl border border-amber-100">
-                                                            <div className="text-[10px] font-bold text-amber-600 uppercase mb-2">Dane logowania</div>
-                                                            {item.login && (
-                                                                <div className="flex items-center justify-between mb-1">
-                                                                    <span className="text-sm font-mono text-slate-700"><b className="text-slate-900">L:</b> {item.login}</span>
-                                                                    <button onClick={(e) => { e.stopPropagation(); copyToClipboard(item.login); }} className="text-blue-500 p-1"><Icon path={icons.clipboard} size={14} /></button>
-                                                                </div>
-                                                            )}
-                                                            {item.password && (
-                                                                <div className="flex items-center justify-between">
-                                                                    <span className="text-sm font-mono text-slate-700"><b className="text-slate-900">H:</b> {item.password}</span>
-                                                                    <button onClick={(e) => { e.stopPropagation(); copyToClipboard(item.password); }} className="text-blue-500 p-1"><Icon path={icons.clipboard} size={14} /></button>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                    {/* Uwagi */}
-                                                    {item.notes && (
-                                                        <div className="mb-3">
-                                                            <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Uwagi</div>
-                                                            <div className="text-sm text-slate-600 whitespace-pre-wrap">{item.notes}</div>
-                                                        </div>
-                                                    )}
-                                                    {/* Ostatnia edycja */}
-                                                    {item.lastEdited && (
-                                                        <div className="text-[10px] text-slate-400 mb-3">Zmieniono: {new Date(item.lastEdited).toLocaleDateString('pl-PL')}</div>
-                                                    )}
-                                                    {/* Akcje */}
-                                                    <div className="flex gap-2 pt-2 border-t border-slate-100">
-                                                        <button onClick={(e) => { e.stopPropagation(); openDiscountEdit(item); }} className="flex-1 bg-pink-50 text-pink-600 font-bold py-2.5 rounded-xl text-sm border border-pink-200 active:scale-95 transition flex items-center justify-center gap-1.5">
-                                                            <Icon path={icons.edit3} size={14} /> Edytuj
-                                                        </button>
-                                                        <button onClick={(e) => { e.stopPropagation(); handleDeleteDiscount(item.id); }} className="bg-white text-red-400 font-bold py-2.5 px-4 rounded-xl text-sm border border-red-200 active:scale-95 transition">
-                                                            <Icon path={icons.trash2} size={14} />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )}
-                    {/* FAB: DODAWANIE */}
-
-                    {activeTab === 'sales' && (
-                        <div className="absolute bottom-[80px] right-5 z-20">
-                            <button onClick={() => setIsAddModalOpen(true)} className="w-14 h-14 bg-slate-900 text-white rounded-full shadow-lg shadow-slate-900/30 flex items-center justify-center transition-transform active:scale-90"><Icon path={icons.plus} size={28} strokeWidth={2.5} /></button>
-                        </div>
-                    )}
-                    {activeTab === 'phones' && (
-                        <div className="absolute bottom-[80px] right-5 z-20">
-                            <button onClick={() => { setPhoneData({ id: null, carrier: '', name: '', number: '', notes: '' }); setIsPhoneModalOpen(true); }} className="w-14 h-14 bg-green-600 text-white rounded-full shadow-lg shadow-green-600/30 flex items-center justify-center transition-transform active:scale-90"><Icon path={icons.plus} size={28} strokeWidth={2.5} /></button>
-                        </div>
-                    )}
-                    {activeTab === 'discounts' && (
-                        <div className="absolute bottom-[80px] right-5 z-20">
-                            <button onClick={openDiscountAdd} className="w-14 h-14 bg-pink-600 text-white rounded-full shadow-lg shadow-pink-600/30 flex items-center justify-center transition-transform active:scale-90"><Icon path={icons.plus} size={28} strokeWidth={2.5} /></button>
-                        </div>
-                    )}
-
-                    {/* BOTTOM NAV */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 pb-safe z-30 h-[65px] flex items-center shadow-[0_-5px_20px_rgba(0,0,0,0.03)]">
-                        <button onClick={() => setActiveTab('sales')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'sales' ? 'text-slate-900' : 'text-slate-400'}`}>
-                            <Icon path={icons.map} size={24} strokeWidth={activeTab === 'sales' ? 2.5 : 2} />
-                            <span className="text-[10px] font-bold mt-1">Trasa</span>
-                        </button>
-                        <button onClick={() => setActiveTab('warehouse')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'warehouse' ? 'text-orange-600' : 'text-slate-400'}`}>
-                            <div className="relative">
-                                <Icon path={icons.truck} size={24} strokeWidth={activeTab === 'warehouse' ? 2.5 : 2} />
-                                {deliveries.filter(d => d.date === new Date().toISOString().split('T')[0]).length > 0 && <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold shadow-sm">{deliveries.filter(d => d.date === new Date().toISOString().split('T')[0]).length}</span>}
-                            </div>
-                            <span className="text-[10px] font-bold mt-1">Magazyn</span>
-                        </button>
-                        <button onClick={() => setActiveTab('phones')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'phones' ? 'text-green-600' : 'text-slate-400'}`}>
-                            <Icon path={icons.phone || '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>'} size={24} strokeWidth={activeTab === 'phones' ? 2.5 : 2} />
-                            <span className="text-[10px] font-bold mt-1">Telefony</span>
-                        </button>
-                        <button onClick={() => setActiveTab('orders')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'orders' ? 'text-blue-600' : 'text-slate-400'}`}>
-                            <div className="relative">
-                                <Icon path={icons.shoppingCart} size={22} strokeWidth={activeTab === 'orders' ? 2.5 : 2} />
-                                {purchases.filter(p => !['wprowadzona', 'anulowane', 'zwrocone'].includes(p.invoiceStatus_v2)).length > 0 &&
-                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold shadow-sm">
-                                        {purchases.filter(p => !['wprowadzona', 'anulowane', 'zwrocone'].includes(p.invoiceStatus_v2)).length}
-                                    </span>
-                                }
-                            </div>
-                            <span className="text-[9px] font-bold mt-1">Allegro</span>
-                        </button>
-                        <button onClick={() => setActiveTab('discounts')} className={`flex-1 flex flex-col items-center justify-center h-full active:scale-95 transition ${activeTab === 'discounts' ? 'text-pink-600' : 'text-slate-400'}`}>
-                            <Icon path={icons.list} size={22} strokeWidth={activeTab === 'discounts' ? 2.5 : 2} />
-                            <span className="text-[9px] font-bold mt-1">Rabaty</span>
-                        </button>
-                    </div>
-
-                    {/* TOAST */}
-                    {toast && (
-                        <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-slate-900/95 backdrop-blur text-white px-4 py-2.5 rounded-full shadow-xl flex items-center gap-3 z-[100] animate-fade-in w-max max-w-[90%]">
-                            <Icon path={icons.checkCircle} className="text-green-400" size={18} />
-                            <span className="font-bold text-sm">{toast}</span>
-                        </div>
-                    )}
-
-                    {/* MODAL: DODAJ ZLECENIE */}
-                    {isAddModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-end justify-center">
-                            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsAddModalOpen(false)}></div>
-                            <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up max-h-[90vh] overflow-y-auto">
-                                <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
-                                <h3 className="text-2xl font-bold text-slate-800 mb-6">Nowe Zlecenie</h3>
-                                <div className="space-y-4">
-                                    <input className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-lg outline-none focus:border-blue-500 transition" placeholder="Nazwa klienta" value={newData.client} onChange={e => setNewData({ ...newData, client: e.target.value })} autoFocus />
-                                    <div className="w-full bg-slate-100 text-slate-400 border border-slate-200 p-3 rounded-2xl text-sm font-bold text-center uppercase tracking-widest">
-                                        Dowolny kierowca (testy)
-                                    </div>
-                                    <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 outline-none focus:border-blue-500 transition" placeholder="Uwagi..." value={newData.note} onChange={e => setNewData({ ...newData, note: e.target.value })}></textarea>
-                                    <div onClick={() => setNewData({ ...newData, isUrgent: !newData.isUrgent })} className={`p-4 rounded-2xl border cursor-pointer flex items-center gap-3 font-bold transition ${newData.isUrgent ? 'bg-red-50 border-red-300 text-red-600' : 'bg-white border-slate-200 text-slate-400'}`}>
-                                        <Icon path={icons.fire} size={20} className={newData.isUrgent ? 'text-red-500' : 'text-slate-300'} /> PILNE
-                                    </div>
-                                    <button onClick={handleAdd} className="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl text-lg shadow-lg active:scale-95 transition-transform mt-2">DODAJ</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* MODAL: EDYCJA ZLECENIA */}
-                    {isEditModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-end justify-center">
-                            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsEditModalOpen(false)}></div>
-                            <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up">
-                                <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
-                                <div className="flex justify-between items-start mb-6">
-                                    <h3 className="text-xl font-bold text-slate-800">Edycja</h3>
-                                    <button onClick={() => setIsEditModalOpen(false)} className="bg-slate-100 p-2 rounded-full text-slate-500 hover:bg-slate-200"><Icon path={icons.x} size={20} /></button>
-                                </div>
-                                <div className="space-y-4">
-                                    <input className="w-full bg-slate-50 border border-slate-200 p-4 rounded-2xl text-lg font-bold outline-none focus:border-blue-500 transition" value={editData.client} onChange={e => setEditData({ ...editData, client: e.target.value })} />
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <select className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold h-12 outline-none" value={editData.dayOfWeek} onChange={e => setEditData({ ...editData, dayOfWeek: e.target.value })}>{sortedTabs.map(d => <option key={d.key} value={d.key}>{d.label}</option>)}</select>
-                                        <select className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold h-12 outline-none" value={editData.assignedDriver || 'WOLNE'} onChange={e => setEditData({ ...editData, assignedDriver: e.target.value === 'WOLNE' ? '' : e.target.value })}><option value="WOLNE">WOLNE</option><option value="Dawid">Dawid</option><option value="Patryk">Patryk</option></select>
-                                    </div>
-                                    <textarea rows="3" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-500 transition" value={editData.note} onChange={e => setEditData({ ...editData, note: e.target.value })}></textarea>
-                                    <div className="flex gap-3">
-                                        <div onClick={() => setEditData({ ...editData, isUrgent: !editData.isUrgent })} className={`flex-1 p-3 rounded-xl border flex flex-col items-center justify-center gap-1 cursor-pointer transition ${editData.isUrgent ? 'bg-red-50 border-red-500 text-red-600' : 'bg-white border-slate-200 text-slate-400'}`}><Icon path={icons.fire} size={20} /><span className="text-[10px] font-bold uppercase">Pilne</span></div>
-                                        <div onClick={() => setEditData({ ...editData, isPaused: !editData.isPaused })} className={`flex-1 p-3 rounded-xl border flex flex-col items-center justify-center gap-1 cursor-pointer transition ${editData.isPaused ? 'bg-slate-700 border-slate-800 text-white' : 'bg-white border-slate-200 text-slate-400'}`}><Icon path={icons.lock} size={20} /><span className="text-[10px] font-bold uppercase">Pauza</span></div>
-                                    </div>
-                                    <div className="flex gap-3 pt-2">
-                                        <button onClick={handleDelete} className="flex-1 bg-white border border-red-200 text-red-500 font-bold py-4 rounded-2xl hover:bg-red-50 transition">USUŃ</button>
-                                        <button onClick={handleSaveEdit} className="flex-[2] bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 transition-transform">ZAPISZ</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    {/* MODAL: NOWE ZAMÓWIENIE ALLEGRO */}
-                    {isOrderModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-end justify-center">
-                            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsOrderModalOpen(false)}></div>
-                            <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up h-[90vh] flex flex-col">
-                                <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4 flex-none"></div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 flex-none">
-                                    <Icon path={icons.shoppingCart} className="text-blue-600" /> Przegląd Zakupów
-                                </h3>
-
-                                <div className="space-y-4 overflow-y-auto flex-1 pb-4">
-                                    {/* This section would contain the UI for browsing purchases */}
-                                    <div className="text-center text-slate-400 font-medium mt-10">Brak dostępnych zakupów do przeglądania.</div>
-                                </div>
-
-                                <div className="flex-none pt-4 border-t border-slate-100">
-                                    <button onClick={() => setIsOrderModalOpen(false)} className="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-200 active:scale-95 transition-transform flex justify-center items-center gap-2">
-                                        ZAMKNIJ
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    {/* MODAL: RABATY (ADD/EDIT) */}
-                    {isDiscountModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-end justify-center">
-                            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsDiscountModalOpen(false)}></div>
-                            <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up max-h-[90vh] overflow-y-auto">
-                                <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-4"></div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"><Icon path={icons.list} className="text-pink-600" /> {discountForm.id ? 'Edycja rabatu' : 'Nowy wpis'}</h3>
-                                <div className="space-y-3">
-                                    <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Dostawca *</label>
-                                        <input className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-lg outline-none focus:border-pink-500 transition" placeholder="Nazwa dostawcy" value={discountForm.supplier} onChange={e => setDiscountForm({ ...discountForm, supplier: e.target.value })} autoFocus />
-                                    </div>
-                                    <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Rabat</label>
-                                        <textarea rows="3" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="np. -35% od cennika..." value={discountForm.discount} onChange={e => setDiscountForm({ ...discountForm, discount: e.target.value })}></textarea>
-                                    </div>
-                                    <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Szczegóły</label>
-                                        <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="Przez kogo, warunki..." value={discountForm.details} onChange={e => setDiscountForm({ ...discountForm, details: e.target.value })}></textarea>
-                                    </div>
-                                    <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">WWW</label>
-                                        <input className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="https://..." value={discountForm.www} onChange={e => setDiscountForm({ ...discountForm, www: e.target.value })} />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div>
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Login</label>
-                                            <input className="w-full bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm font-mono outline-none focus:border-amber-500 transition" placeholder="Login" value={discountForm.login} onChange={e => setDiscountForm({ ...discountForm, login: e.target.value })} />
+                                            <div>
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Hasło</label>
+                                                <input className="w-full bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm font-mono outline-none focus:border-amber-500 transition" placeholder="Hasło" value={discountForm.password} onChange={e => setDiscountForm({ ...discountForm, password: e.target.value })} />
+                                            </div>
                                         </div>
                                         <div>
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Hasło</label>
-                                            <input className="w-full bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm font-mono outline-none focus:border-amber-500 transition" placeholder="Hasło" value={discountForm.password} onChange={e => setDiscountForm({ ...discountForm, password: e.target.value })} />
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Uwagi</label>
+                                            <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="Dodatkowe uwagi..." value={discountForm.notes} onChange={e => setDiscountForm({ ...discountForm, notes: e.target.value })}></textarea>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Uwagi</label>
-                                        <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none focus:border-pink-500 transition" placeholder="Dodatkowe uwagi..." value={discountForm.notes} onChange={e => setDiscountForm({ ...discountForm, notes: e.target.value })}></textarea>
-                                    </div>
-                                    <button onClick={handleSaveDiscount} className="w-full bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-pink-200 active:scale-95 transition-transform mt-2 flex items-center justify-center gap-2">
-                                        <Icon path={icons.save} size={20} /> ZAPISZ
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    {/* MODAL: TELEFONY (ADD/EDIT) */}
-                    {isPhoneModalOpen && (
-                        <div className="fixed inset-0 z-50 flex items-end justify-center">
-                            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsPhoneModalOpen(false)}></div>
-                            <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up">
-                                <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2"><Icon path={icons.phone || icons.search} className="text-green-600" /> {phoneData.id ? 'Edycja' : 'Nowy kontakt'}</h3>
-                                <div className="space-y-4">
-                                    <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Firma / Kurier</label>
-                                        <input list="couriers" className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-lg outline-none focus:border-green-500 transition" value={phoneData.carrier} onChange={e => setPhoneData({ ...phoneData, carrier: e.target.value })} placeholder="Wybierz lub wpisz..." />
-                                        <datalist id="couriers">{PHONE_COURIERS.map(c => <option key={c} value={c} />)}</datalist>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div>
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Imię</label>
-                                            <input className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-semibold outline-none focus:border-green-500 transition" value={phoneData.name} onChange={e => setPhoneData({ ...phoneData, name: e.target.value })} />
-                                        </div>
-                                        <div>
-                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Numer</label>
-                                            <input type="tel" className="w-full bg-green-50 border border-green-200 text-green-800 rounded-2xl p-4 font-mono font-bold outline-none focus:border-green-500 transition" value={phoneData.number} onChange={e => setPhoneData({ ...phoneData, number: e.target.value })} />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Uwagi</label>
-                                        <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-base outline-none focus:border-green-500 transition" value={phoneData.notes} onChange={e => setPhoneData({ ...phoneData, notes: e.target.value })}></textarea>
-                                    </div>
-                                    <div className="flex gap-3 pt-2">
-                                        {phoneData.id && <button onClick={() => handleDeletePhone(phoneData.id)} className="w-14 bg-white border border-red-200 text-red-500 rounded-2xl flex items-center justify-center hover:bg-red-50 transition"><Icon path={icons.trash2} /></button>}
-                                        <button onClick={handleSavePhone} className="flex-1 bg-green-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-200 active:scale-95 transition-transform">ZAPISZ</button>
+                                        <button onClick={handleSaveDiscount} className="w-full bg-pink-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-pink-200 active:scale-95 transition-transform mt-2 flex items-center justify-center gap-2">
+                                            <Icon path={icons.save} size={20} /> ZAPISZ
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                        {/* MODAL: TELEFONY (ADD/EDIT) */}
+                        {isPhoneModalOpen && (
+                            <div className="fixed inset-0 z-50 flex items-end justify-center">
+                                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" onClick={() => setIsPhoneModalOpen(false)}></div>
+                                <div className="bg-white w-full rounded-t-3xl p-6 pb-safe shadow-2xl relative z-10 animate-slide-up">
+                                    <div className="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-6"></div>
+                                    <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2"><Icon path={icons.phone || icons.search} className="text-green-600" /> {phoneData.id ? 'Edycja' : 'Nowy kontakt'}</h3>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Firma / Kurier</label>
+                                            <input list="couriers" className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-lg outline-none focus:border-green-500 transition" value={phoneData.carrier} onChange={e => setPhoneData({ ...phoneData, carrier: e.target.value })} placeholder="Wybierz lub wpisz..." />
+                                            <datalist id="couriers">{PHONE_COURIERS.map(c => <option key={c} value={c} />)}</datalist>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div>
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Imię</label>
+                                                <input className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-semibold outline-none focus:border-green-500 transition" value={phoneData.name} onChange={e => setPhoneData({ ...phoneData, name: e.target.value })} />
+                                            </div>
+                                            <div>
+                                                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Numer</label>
+                                                <input type="tel" className="w-full bg-green-50 border border-green-200 text-green-800 rounded-2xl p-4 font-mono font-bold outline-none focus:border-green-500 transition" value={phoneData.number} onChange={e => setPhoneData({ ...phoneData, number: e.target.value })} />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Uwagi</label>
+                                            <textarea rows="2" className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-base outline-none focus:border-green-500 transition" value={phoneData.notes} onChange={e => setPhoneData({ ...phoneData, notes: e.target.value })}></textarea>
+                                        </div>
+                                        <div className="flex gap-3 pt-2">
+                                            {phoneData.id && <button onClick={() => handleDeletePhone(phoneData.id)} className="w-14 bg-white border border-red-200 text-red-500 rounded-2xl flex items-center justify-center hover:bg-red-50 transition"><Icon path={icons.trash2} /></button>}
+                                            <button onClick={handleSavePhone} className="flex-1 bg-green-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-200 active:scale-95 transition-transform">ZAPISZ</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        )}
 
                 </div>
+                </div >
             );
         }
 
