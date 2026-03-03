@@ -22,9 +22,16 @@ class MainActivity : AppCompatActivity() {
         webSettings.databaseEnabled = true
         webSettings.allowFileAccess = true
         webSettings.allowContentAccess = true
+        webSettings.allowFileAccessFromFileURLs = true
+        webSettings.allowUniversalAccessFromFileURLs = true
         
         // This is crucial for JS alerts (like "Błędne hasło!") and proper page rendering/console output
-        webView.webChromeClient = WebChromeClient()
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onConsoleMessage(consoleMessage: android.webkit.ConsoleMessage?): Boolean {
+                android.util.Log.d("WebViewConsole", "${consoleMessage?.message()} -- From line ${consoleMessage?.lineNumber()} of ${consoleMessage?.sourceId()}")
+                return super.onConsoleMessage(consoleMessage)
+            }
+        }
         webView.webViewClient = WebViewClient()
         webView.loadUrl("file:///android_asset/handlowiec.html")
     }
